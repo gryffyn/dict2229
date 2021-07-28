@@ -1,5 +1,6 @@
 import 'package:dict2229/pages/definition.dart';
 import 'package:dict2229/pages/match.dart';
+import 'package:dict2229/pages/settings.dart';
 // import 'package:dict2229/pages/settings.dart';
 import 'package:dict2229/pages/settingsWIP.dart';
 import 'package:flutter/material.dart';
@@ -61,8 +62,8 @@ class MyApp extends StatelessWidget {
                   PageDefinition(),
                   PageMatch(),
                   // TODO finish PageSettings
-                  // PageSettings(),
-                  PageSettingsWIP(),
+                  PageSettings(),
+                  // PageSettingsWIP(),
                 ],
               ),
             )

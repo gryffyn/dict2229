@@ -19,7 +19,7 @@ class PageSettingsWIP extends StatelessWidget {
                 color: Colors.pink,
                 fontSize: 96,
               ),
-            )
+            ),
           ],
         ),
       )

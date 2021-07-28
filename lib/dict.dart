@@ -158,6 +158,7 @@ class Definition {
         sourceName = sourceRe.group(2)!;
         sourceDesc = sourceRe.group(3)!;
         body = lines.sublist(3).join("\n");
+        body = body.substring(0, body.length-2);
       }
       break;
 
@@ -167,6 +168,7 @@ class Definition {
         sourceName = sourceRe.group(2)!;
         sourceDesc = sourceRe.group(3)!;
         body = lines.sublist(2).join("\n");
+        body = body.substring(0, body.length-2);
       }
       break;
     }

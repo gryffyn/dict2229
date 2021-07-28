@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:application_icon/application_icon.dart';
 
 class PageSettings extends StatelessWidget {
   @override
@@ -40,6 +41,17 @@ class PageSettings extends StatelessWidget {
                             label: 'Server port',
                             pref: 'io.gryffyn.dict2229.port',
                           ),
+                      );
+                    },
+                  ),
+                  SettingsTile(
+                    title: 'About',
+                    leading: Icon(Icons.info_outline_rounded),
+                    onPressed: (BuildContext context) {
+                      showAboutDialog(context: context,
+                        applicationName: 'dict2229',
+                        applicationVersion: '0.1.1',
+                        applicationLegalese: 'Copyright © gryffyn 2021',
                       );
                     },
                   ),

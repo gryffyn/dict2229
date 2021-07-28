@@ -58,30 +58,28 @@ class _PageDefinition extends State<PageDefinition> {
           Expanded(
             child: Padding(
               padding: EdgeInsets.all(12),
-              child: SingleChildScrollView(
+              child: ListView.separated(
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                 scrollDirection: Axis.vertical,
-                child: ListView.separated(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: out.length,
-                  separatorBuilder: (context, index) {
-                    return Divider();
-                  },
-                  itemBuilder: (BuildContext context, int index) {
-                    Definition key = out.elementAt(index);
-                    return RichText(
-                      text: TextSpan(
-                        style: DefaultTextStyle.of(context).style,
-                        children: <TextSpan>[
-                          TextSpan(text: key.title + "\n", style: TextStyle(fontWeight: FontWeight.bold)),
-                          TextSpan(text: key.body + "\n\n"),
-                          TextSpan(text: key.sourceName + "\n", style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontSize: DefaultTextStyle.of(context).style.fontSize!*0.7)),
-                          TextSpan(text: key.sourceDesc + "\n", style: TextStyle(fontStyle: FontStyle.italic, fontSize: DefaultTextStyle.of(context).style.fontSize!*0.7)),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                shrinkWrap: true,
+                itemCount: out.length,
+                separatorBuilder: (context, index) {
+                  return Divider();
+                },
+                itemBuilder: (BuildContext context, int index) {
+                  Definition key = out.elementAt(index);
+                  return RichText(
+                    text: TextSpan(
+                      style: DefaultTextStyle.of(context).style,
+                      children: <TextSpan>[
+                        TextSpan(text: key.title + "\n", style: TextStyle(fontWeight: FontWeight.bold)),
+                        TextSpan(text: key.body + "\n\n"),
+                        TextSpan(text: key.sourceName + "\n", style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontSize: DefaultTextStyle.of(context).style.fontSize!*0.7)),
+                        TextSpan(text: key.sourceDesc + "\n", style: TextStyle(fontStyle: FontStyle.italic, fontSize: DefaultTextStyle.of(context).style.fontSize!*0.7)),
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
           ),
