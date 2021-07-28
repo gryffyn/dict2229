@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg12"
+   inkscape:version="1.1 (c4e8f9ed74, 2021-05-24)"
+   sodipodi:docname="drawing.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview14"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.90509668"
+     inkscape:cx="316.54077"
+     inkscape:cy="414.87281"
+     inkscape:window-width="1920"
+     inkscape:window-height="1035"
+     inkscape:window-x="0"
+     inkscape:window-y="20"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs9">
+    <rect
+       x="197.87317"
+       y="175.8299"
+       width="298.92603"
+       height="197.85766"
+       id="rect3034" />
+  </defs>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="bg">
+    <rect
+       style="fill:#d81b60;fill-opacity:1;stroke:none;stroke-width:6.00001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="rect33929"
+       width="192.98235"
+       height="192.98235"
+       x="10.485043"
+       y="13.248031"
+       inkscape:export-filename="/home/gryffyn/projects/dict2229/assets/icon/adaptive_bg.png"
+       inkscape:export-xdpi="269.5542"
+       inkscape:export-ydpi="269.5542" />
+  </g>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       id="rect22815"
+       width="67.127899"
+       height="3.6247008"
+       x="73.412262"
+       y="101.05521"
+       inkscape:export-filename="/home/gryffyn/projects/dict2229/assets/icon/icon.png"
+       inkscape:export-xdpi="269.5542"
+       inkscape:export-ydpi="269.5542" />
+    <g
+       id="g34125"
+       transform="translate(0,5.2708921)"
+       inkscape:export-filename="/home/gryffyn/projects/dict2229/assets/icon/icon_transparent.png"
+       inkscape:export-xdpi="269.5542"
+       inkscape:export-ydpi="269.5542">
+      <rect
+         style="fill:#f0f0f0;fill-opacity:1;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;paint-order:normal"
+         id="rect38"
+         width="86.071472"
+         height="122.28399"
+         x="63.940479"
+         y="43.326317" />
+      <text
+         xml:space="preserve"
+         transform="matrix(0.26458333,0,0,0.26458333,20.047672,2.520928)"
+         id="text3032"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:96px;line-height:1.25;font-family:Righteous;-inkscape-font-specification:'Righteous, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;white-space:pre;shape-inside:url(#rect3034);fill:#d81b60;fill-opacity:1;stroke:none"><tspan
+           x="197.87305"
+           y="278.66374"
+           id="tspan34549"><tspan
+             style="font-size:112px"
+             id="tspan34547">2229</tspan></tspan></text>
+      <g
+         id="g22845"
+         transform="translate(11.179947,-0.67903137)">
+        <rect
+           style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect22613"
+           width="67.127899"
+           height="3.6247008"
+           x="61.825729"
+           y="89.551682" />
+        <rect
+           style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect22817"
+           width="67.127899"
+           height="3.6247008"
+           x="61.825729"
+           y="101.73424" />
+        <rect
+           style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect22831"
+           width="67.127899"
+           height="3.6247008"
+           x="62.157852"
+           y="113.91679" />
+        <rect
+           style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect22833"
+           width="67.127899"
+           height="3.6247008"
+           x="62.157852"
+           y="126.09935" />
+        <rect
+           style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect22835"
+           width="67.127899"
+           height="3.6247008"
+           x="62.638908"
+           y="138.28191" />
+        <rect
+           style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+           id="rect22837"
+           width="67.127899"
+           height="3.6247008"
+           x="62.638908"
+           y="150.46446" />
+      </g>
+    </g>
+  </g>
+</svg>
