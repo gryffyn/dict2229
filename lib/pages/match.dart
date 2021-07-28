@@ -62,7 +62,7 @@ class _PageMatch extends State<PageMatch> {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 8, top: 8, right: 8),
+            padding: EdgeInsets.only(left: 14, top: 16, right: 14),
             child: TextField(
               autofocus: true,
               focusNode: _focusNode,
@@ -76,14 +76,14 @@ class _PageMatch extends State<PageMatch> {
             ),
           ),
           Padding(
-              padding: EdgeInsets.only(left: 8, top: 8, right: 8),
+              padding: EdgeInsets.only(left: 14, top: 8, right: 14),
               child: Row(
                 children: [
                   Expanded(
                     child: TextField(
                       autofocus: true,
                       decoration: InputDecoration(
-                        hintText: 'stragegy to use',
+                        hintText: 'strategy to use',
                         border: OutlineInputBorder(),
                       ),
                       onChanged: (text) {

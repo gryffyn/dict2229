@@ -1,70 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:application_icon/application_icon.dart';
 
 class PageSettings extends StatelessWidget {
+  void portDialog(BuildContext context) {
+    var alert = Dialog(
+      title: 'Server port',
+      label: 'Server port',
+      pref: 'io.gryffyn.dict2229.port',
+    );
+    showDialog(context: context, builder: (BuildContext context) => alert);
+  }
+
+  void addrDialog(BuildContext context) {
+    var alert = Dialog(
+      title: 'Server address',
+      label: 'Server address',
+      pref: 'io.gryffyn.dict2229.address',
+    );
+    showDialog(context: context, builder: (BuildContext context) => alert);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: SettingsList(
-            sections: [
-              SettingsSection(
-                tiles: [
-                  SettingsTile(
-                    title: 'Server Address',
-                    subtitle: 'dict.org',
-                    leading: Icon(Icons.storage),
-                    onPressed: (BuildContext context) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) =>
-                          Dialog(
-                            title: 'Server address',
-                            label: 'Server address',
-                            pref: 'io.gryffyn.dict2229.server_url',
-                          ),
-                      );
-                    },
-                  ),
-                  SettingsTile(
-                    title: 'Server Port',
-                    subtitle: '2628',
-                    leading: Icon(Icons.storage),
-                    onPressed: (BuildContext context) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) =>
-                          Dialog(
-                            title: 'Server port',
-                            label: 'Server port',
-                            pref: 'io.gryffyn.dict2229.port',
-                          ),
-                      );
-                    },
-                  ),
-                  SettingsTile(
-                    title: 'About',
-                    leading: Icon(Icons.info_outline_rounded),
-                    onPressed: (BuildContext context) {
-                      showAboutDialog(context: context,
-                        applicationName: 'dict2229',
-                        applicationVersion: '0.1.1',
-                        applicationLegalese: 'Copyright © gryffyn 2021',
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ],
-          )),
+        child: ListView(
+          padding: EdgeInsets.only(left: 14, top: 16, right: 14),
+          children: [
+            ListTile(
+              leading: Icon(Icons.storage),
+              title: Text('Server address'),
+              subtitle: Text('dict.org'),
+              onTap: () => addrDialog(context),
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.storage),
+              title: Text('Server port'),
+              subtitle: Text('2628'),
+              onTap: () => portDialog(context),
+            ),
+          ],
+        )
+      ),
     );
   }
 }
 
 class Dialog extends StatefulWidget {
-  const Dialog({Key? key, required this.title, required this.label, required this.pref}) : super(key: key);
+  const Dialog(
+      {Key? key, required this.title, required this.label, required this.pref})
+      : super(key: key);
   final String title;
   final String label;
   final String pref;
@@ -89,8 +76,7 @@ class _Dialog extends State<Dialog> {
     var inp;
     try {
       inp = int.parse(controller.text);
-    }
-    on FormatException {
+    } on FormatException {
       inp = controller.text;
     }
     prefs.setString(this.widget.pref, inp);
@@ -101,7 +87,7 @@ class _Dialog extends State<Dialog> {
 
   @override
   Widget build(BuildContext context) {
-    return new AlertDialog (
+    return new AlertDialog(
       title: Text(this.widget.title),
       content: new Column(
         mainAxisSize: MainAxisSize.min,
@@ -130,7 +116,7 @@ class _Dialog extends State<Dialog> {
 
 Widget dialogAddress(BuildContext context) {
   String address;
-  return new AlertDialog (
+  return new AlertDialog(
     title: const Text('Popup example'),
     content: new Column(
       mainAxisSize: MainAxisSize.min,
@@ -147,9 +133,7 @@ Widget dialogAddress(BuildContext context) {
         onPressed: () {
           Navigator.of(context).pop();
         },
-        textColor: Theme
-            .of(context)
-            .primaryColor,
+        textColor: Theme.of(context).primaryColor,
         child: const Text('Save'),
       ),
     ],

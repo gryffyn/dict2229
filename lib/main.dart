@@ -1,8 +1,9 @@
+import 'package:backdrop/backdrop.dart';
+import 'package:dict2229/pages/about.dart';
 import 'package:dict2229/pages/definition.dart';
 import 'package:dict2229/pages/match.dart';
 import 'package:dict2229/pages/settings.dart';
-// import 'package:dict2229/pages/settings.dart';
-import 'package:dict2229/pages/settingsWIP.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -39,35 +40,57 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.pink,
         ),
         themeMode: ThemeMode.system,
-        home: DefaultTabController(
-            length: 3,
-            child: Scaffold(
-              appBar: AppBar(
-                brightness: Brightness.dark,
-                title: const Text('dict2229'),
-              ),
-              bottomNavigationBar: Builder(builder: (BuildContext context) {
-                return TabBar(
-                  labelColor: Theme.of(context).primaryTextTheme.bodyText1!.color,
-                  indicatorColor: Colors.pink,
-                  tabs: [
-                    Tab(text: "Definition"),
-                    Tab(text: "Match"),
-                    Tab(text: "Settings"),
-                  ],
-                );
-              }),
-              body: TabBarView(
-                children: [
-                  PageDefinition(),
-                  PageMatch(),
-                  // TODO finish PageSettings
-                  PageSettings(),
-                  // PageSettingsWIP(),
-                ],
-              ),
-            )
-        ),
+        home: Navigation(),
     );
   }
+}
+
+class Navigation extends StatefulWidget {
+  @override
+  _NavigationState createState() => _NavigationState();
+}
+
+class _NavigationState extends State<Navigation> {
+  int _currentIndex = 0;
+  final List<Widget> _pages = [PageDefinition(), PageMatch(), PageSettings(), PageAbout()];
+  final List<String> _subHeaders = ["Definition", "Match", "Settings", "About"];
+
+  @override
+  Widget build(BuildContext context) {
+    return BackdropScaffold(
+      frontLayerScrim: Colors.black54,
+      appBar: BackdropAppBar(
+        title: Text(_subHeaders[_currentIndex]),
+      ),
+      stickyFrontLayer: true,
+      frontLayer: _pages[_currentIndex],
+      backLayer: _createBackLayer(),
+    );
+  }
+
+  Widget _createBackLayer() => BackdropNavigationBackLayer(
+    items: [
+      ListTile(
+          title: Text(
+            "Definition",
+          )
+      ),
+      ListTile(
+          title: Text(
+            "Match",
+          )
+      ),
+      ListTile(
+          title: Text(
+            "Settings",
+          )
+      ),
+      ListTile(
+          title: Text(
+            "About",
+          )
+      ),
+    ],
+    onTap: (int position) => {setState(() => _currentIndex = position)},
+  );
 }

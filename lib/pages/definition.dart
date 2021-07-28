@@ -42,7 +42,7 @@ class _PageDefinition extends State<PageDefinition> {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 8, top: 12, right: 8),
+            padding: EdgeInsets.only(left: 14, top: 16, right: 14),
             child: TextField(
               autofocus: true,
               focusNode: _focusNode,
@@ -55,6 +55,7 @@ class _PageDefinition extends State<PageDefinition> {
               },
             ),
           ),
+          // TODO List dictionaries and allow choice
           Expanded(
             child: Padding(
               padding: EdgeInsets.all(12),
