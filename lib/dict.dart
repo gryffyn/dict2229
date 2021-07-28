@@ -144,6 +144,7 @@ class Definition {
   late String body = "";
 
   void processDefinition(String def) {
+    print(def);
     var lines = def.split("\n");
     var sourceRe;
     switch (int.tryParse(lines[0].substring(0,3))) {
@@ -158,7 +159,9 @@ class Definition {
         sourceName = sourceRe.group(2)!;
         sourceDesc = sourceRe.group(3)!;
         body = lines.sublist(3).join("\n");
-        body = body.substring(0, body.length-2);
+        if (body.length >= 2 && body.substring(body.length-2, body.length) == "\n.") {
+          body = body.substring(0, body.length-2);
+        }
       }
       break;
 
@@ -168,7 +171,9 @@ class Definition {
         sourceName = sourceRe.group(2)!;
         sourceDesc = sourceRe.group(3)!;
         body = lines.sublist(2).join("\n");
-        body = body.substring(0, body.length-2);
+        if (body.length >= 2 && body.substring(body.length-2, body.length) == "\n.") {
+          body = body.substring(0, body.length-2);
+        }
       }
       break;
     }
@@ -191,9 +196,11 @@ List<Definition> splitDefinitions(String str) {
   var lines = stripHeaders(str).split("\n.\n");
   List<Definition>? defs = [];
   for (var line in lines) {
-    Definition def = new Definition();
-    def.processDefinition(line);
-    defs.add(def);
+    if (line.trim() != "") {
+      Definition def = new Definition();
+      def.processDefinition(line);
+      defs.add(def);
+    }
   }
   return defs;
 }
