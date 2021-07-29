@@ -133,13 +133,16 @@ class _NavigationState extends State<Navigation> {
 }
 
 setDefault(Box box) {
-  if (box.get('addr') == null) {
+  if (!box.containsKey('addr')) {
     box.put('addr', 'neveris.one');
   }
-  if (box.get('port') == null) {
+  if (!box.containsKey('port')) {
     box.put('port', '2628');
   }
-  if (box.get('dict') == null) {
+  if (!box.containsKey('dict')) {
     box.put('dict', '*');
+  }
+  if (!box.containsKey('strat')) {
+    box.put('strat', '.');
   }
 }

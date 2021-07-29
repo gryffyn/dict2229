@@ -38,6 +38,20 @@ class _PageDefinition extends State<PageDefinition> {
         FocusScope.of(context).requestFocus(_focusNode));
   }
 
+  List<TextSpan> buildText(Definition key) {
+    if (key.sourceName == "") {
+      return <TextSpan>[
+        TextSpan(text: key.title, style: TextStyle(fontWeight: FontWeight.bold)),
+      ];
+    }
+   return <TextSpan>[
+      TextSpan(text: key.title + "\n", style: TextStyle(fontWeight: FontWeight.bold)),
+      TextSpan(text: key.body + "\n\n"),
+      TextSpan(text: key.sourceName + "\n", style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontSize: DefaultTextStyle.of(context).style.fontSize!*0.7)),
+      TextSpan(text: key.sourceDesc + "\n", style: TextStyle(fontStyle: FontStyle.italic, fontSize: DefaultTextStyle.of(context).style.fontSize!*0.7)),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,12 +91,7 @@ class _PageDefinition extends State<PageDefinition> {
                   return RichText(
                     text: TextSpan(
                       style: DefaultTextStyle.of(context).style,
-                      children: <TextSpan>[
-                        TextSpan(text: key.title + "\n", style: TextStyle(fontWeight: FontWeight.bold)),
-                        TextSpan(text: key.body + "\n\n"),
-                        TextSpan(text: key.sourceName + "\n", style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontSize: DefaultTextStyle.of(context).style.fontSize!*0.7)),
-                        TextSpan(text: key.sourceDesc + "\n", style: TextStyle(fontStyle: FontStyle.italic, fontSize: DefaultTextStyle.of(context).style.fontSize!*0.7)),
-                      ],
+                      children: buildText(key),
                     ),
                   );
                 },

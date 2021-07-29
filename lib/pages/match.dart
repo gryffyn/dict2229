@@ -7,6 +7,7 @@ import 'package:dict2229/dialogs/listDialog.dart';
 import 'package:dict2229/dict.dart';
 import 'package:flutter/material.dart';
 import 'package:dict2229/utils.dart';
+import 'package:hive/hive.dart';
 
 class PageMatch extends StatefulWidget {
   PageMatch({Key? key}) : super(key: key);
@@ -16,30 +17,40 @@ class PageMatch extends StatefulWidget {
 }
 
 class _PageMatch extends State<PageMatch> {
-  var out = "";
+  late List<Match> out = [];
   var search = "";
   var strat = "";
   final FocusNode _focusNode = FocusNode();
 
   void getDef(String text) async {
-    setState(() {
-      search = text;
-    });
+    var box = Hive.box('prefs');
     // TODO shared prefs
     // final prefs = await SharedPreferences.getInstance();
     // final address = prefs.getString('io.gryffyn.dict2229.server_url') ?? "";
     // final port = prefs.getInt('io.gryffyn.dict2229.port') ?? 0;
-    var dict = Dict.newDict("neveris.one", 2628);
-    var definition = await dict.match(parenthesize(text), strat);
+    var dict = Dict.newDict(box.get('addr'), int.tryParse(box.get('port'))!);
+    var definition = await dict.match(parenthesize(text), box.get('strat'), box.get('dict'));
     setState(() {
+      search = text;
       out = definition;
     });
   }
 
-  void setStrat(String text) async {
+  void setSearch(String text) {
+    setState(() {
+      search = text;
+    });
+  }
+
+  void setStrat(String text) {
     setState(() {
       strat = text;
     });
+  }
+
+  String getStrat() {
+    var box = Hive.box('prefs');
+    return box.get('strat');
   }
 
   void showList() async {
@@ -59,6 +70,18 @@ class _PageMatch extends State<PageMatch> {
     WidgetsBinding.instance!.addPostFrameCallback((_) =>FocusScope.of(context).requestFocus(_focusNode));
   }
 
+  List<TextSpan> buildText(Match key) {
+    if (key.matchName == "") {
+      return <TextSpan>[
+        TextSpan(text: key.sourceName, style: TextStyle(fontWeight: FontWeight.bold)),
+      ];
+    }
+    return <TextSpan>[
+      TextSpan(text: key.matchName + "\n"),
+      TextSpan(text: key.sourceName + "\n", style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontSize: DefaultTextStyle.of(context).style.fontSize!*0.7)),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,6 +99,9 @@ class _PageMatch extends State<PageMatch> {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
+              onChanged: (text) {
+                setSearch(text);
+              },
               onSubmitted: (text) {
                 getDef(text);
               },
@@ -90,7 +116,7 @@ class _PageMatch extends State<PageMatch> {
                       autofocus: true,
                       decoration: InputDecoration(
                         isDense: true,
-                        hintText: 'strategy to use',
+                        hintText: getStrat(),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -114,9 +140,23 @@ class _PageMatch extends State<PageMatch> {
           Expanded(
             child: Padding(
               padding: EdgeInsets.all(12),
-              child: SingleChildScrollView(
+              child: ListView.separated(
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                 scrollDirection: Axis.vertical,
-                child: Text(out, softWrap: true),
+                shrinkWrap: true,
+                itemCount: out.length,
+                separatorBuilder: (context, index) {
+                  return Divider();
+                },
+                itemBuilder: (BuildContext context, int index) {
+                  Match key = out.elementAt(index);
+                  return RichText(
+                    text: TextSpan(
+                      style: DefaultTextStyle.of(context).style,
+                      children: buildText(key),
+                    ),
+                  );
+                },
               ),
             ),
           ),

@@ -89,23 +89,25 @@ class Dict {
     return defs;
   }
 
-  Future<String> match(String word,
+  Future<List<Match>> match(String word,
       [String strategy = '.', String database = '*']) async {
     var resp = "";
     late Socket _socket;
+    late List<Match> matches;
     await Socket.connect(_address, _port!).then((Socket sock) {
       _socket = sock;
     }).then((_) {
-      _socket.write('DEFINE $database $strategy $word \r\n QUIT\r\n');
+      _socket.write('MATCH $database $strategy $word \r\n QUIT\r\n');
       return _socket.flush();
     }).then((_) {
       return _socket.toList();
     }).then((data) {
       var bytes = Uint8List.fromList(data.expand((x) => x).toList());
       resp = utf8.decode(bytes).replaceAll("\r", "");
+      matches = splitMatches(resp);
     });
     _socket.close();
-    return resp;
+    return matches;
   }
 
   Future<Map> getStrategies() async {
@@ -149,6 +151,11 @@ class Definition {
   late String sourceName = "";
   late String sourceDesc = "";
   late String body = "";
+
+  void getNumDefinitions(String def) {
+    var lines = def.split("\n");
+    numDefinitions = int.tryParse(RegExp(r'^150\s(\d+)\s').firstMatch(lines[0])!.group(1)!)!;
+  }
 
   void processDefinition(String def) {
     var lines = def.split("\n");
@@ -194,12 +201,57 @@ String stripHeaders(String str) {
 List<Definition> splitDefinitions(String str) {
   var lines = stripHeaders(str).split("\n.\n");
   List<Definition>? defs = [];
+  var firstline = lines[0];
+  var numofDefs = 0;
+  Definition numDef = new Definition();
+  if (firstline.trim() != "") {
+    numDef.getNumDefinitions(firstline);
+    numofDefs = numDef.numDefinitions;
+  }
+  numDef.title = "$numofDefs definitions found.";
+  defs.add(numDef);
   for (var line in lines) {
     if (line.trim() != "") {
       Definition def = new Definition();
       def.processDefinition(line);
+
       defs.add(def);
     }
   }
   return defs;
+}
+
+class Match {
+  late int numMatch = 0;
+  late String matchName = "";
+  late String sourceName = "";
+
+  void processMatch(String def) {
+    if (def != "" && def != ".") {
+      var regex = RegExp(r'^(\S*)\s\"(\S*)\"').firstMatch(def)!;
+      sourceName = regex.group(1)!;
+      matchName = regex.group(2)!;
+    }
+  }
+}
+
+List<Match> splitMatches(String str) {
+  var lines = stripHeaders(str).split("\n");
+  List<Match>? matches = [];
+  Match firstMatch = new Match();
+  var numMatches = 0;
+  if (lines[0] != "") {
+    numMatches = int.tryParse(RegExp(r'^152\s(\d+)\s').firstMatch(lines[0])!.group(1)!)!;
+  }
+  firstMatch.sourceName = "$numMatches matches found.";
+  matches.add(firstMatch);
+
+  for (var line in lines.sublist(1)) {
+    if (line.trim() != "") {
+      Match match = new Match();
+      match.processMatch(line);
+      matches.add(match);
+    }
+  }
+  return matches;
 }
