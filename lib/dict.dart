@@ -1,9 +1,12 @@
+/*
+ * Copyright (c) gryffyn 2021.
+ * Licensed under the MIT license. See LICENSE file in the project root for details.
+ */
+
 import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
 import 'dart:typed_data';
-
-import 'package:dict2229/utils.dart';
 
 class Dict {
   Dict();
@@ -35,7 +38,7 @@ class Dict {
     return resp;
   }
 
-  Future<String> getDatabases() async {
+  Future<Map> getDatabases() async {
     var resp = "";
     late Socket _socket;
     await Socket.connect(_address, _port!).then((Socket sock) {
@@ -50,16 +53,20 @@ class Dict {
     });
     _socket.close();
     LineSplitter ls = new LineSplitter();
-    List<String> splitOut = ls.convert(resp);
+    List<String> splitOut = ls.convert(stripHeaders(resp));
     var dicts = new Map();
     for (int i = 1; i < splitOut.length; i++) {
       if (splitOut[i] == ".") {
         break;
       }
-      var dict = splitOut[i].split(" ");
-      dicts[dict[0]] = dict[1];
+      var dict = splitOut[i].indexOf(" ");
+      List parts = [
+        splitOut[i].substring(0, dict).trim(),
+        splitOut[i].substring(dict + 1).trim()
+      ];
+      dicts[parts[0]] = parts[1];
     }
-    return resp;
+    return dicts;
   }
 
   Future<List<Definition>> define(String word, [String database = '*']) async {
@@ -115,7 +122,7 @@ class Dict {
     });
     _socket.close();
     LineSplitter ls = new LineSplitter();
-    List<String> splitOut = ls.convert(resp);
+    List<String> splitOut = ls.convert(stripHeaders(resp));
     var strats = new Map();
     for (int i = 1; i < splitOut.length; i++) {
       if (splitOut[i] == ".") {
@@ -144,7 +151,6 @@ class Definition {
   late String body = "";
 
   void processDefinition(String def) {
-    print(def);
     var lines = def.split("\n");
     var sourceRe;
     switch (int.tryParse(lines[0].substring(0,3))) {
@@ -183,13 +189,6 @@ class Definition {
 String stripHeaders(String str) {
   var lines = str.split("\n");
   return lines.sublist(1, lines.length-3).join("\n");
-}
-
-testSplit(String str) {
-  var lines = stripHeaders(str).split("\n.\n");
-  for (var line in lines) {
-    print("\nLINE: " + line);
-  }
 }
 
 List<Definition> splitDefinitions(String str) {

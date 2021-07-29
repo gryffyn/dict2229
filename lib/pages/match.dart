@@ -1,8 +1,11 @@
+/*
+ * Copyright (c) gryffyn 2021.
+ * Licensed under the MIT license. See LICENSE file in the project root for details.
+ */
+
 import 'package:dict2229/dialogs/listDialog.dart';
 import 'package:dict2229/dict.dart';
 import 'package:flutter/material.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:dict2229/utils.dart';
 
 class PageMatch extends StatefulWidget {
@@ -62,13 +65,16 @@ class _PageMatch extends State<PageMatch> {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 14, top: 16, right: 14),
+            padding: EdgeInsets.only(left: 12, top: 16, right: 12),
             child: TextField(
               autofocus: true,
               focusNode: _focusNode,
               decoration: InputDecoration(
+                isDense: true,
                 hintText: 'string to match',
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
               onSubmitted: (text) {
                 getDef(text);
@@ -76,15 +82,18 @@ class _PageMatch extends State<PageMatch> {
             ),
           ),
           Padding(
-              padding: EdgeInsets.only(left: 14, top: 8, right: 14),
+              padding: EdgeInsets.only(left: 12, top: 8, right: 12),
               child: Row(
                 children: [
                   Expanded(
                     child: TextField(
                       autofocus: true,
                       decoration: InputDecoration(
+                        isDense: true,
                         hintText: 'strategy to use',
-                        border: OutlineInputBorder(),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                       onChanged: (text) {
                         setStrat(text);

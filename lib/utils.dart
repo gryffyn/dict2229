@@ -1,4 +1,7 @@
-import 'package:dict2229/dict.dart';
+/*
+ * Copyright (c) gryffyn 2021.
+ * Licensed under the MIT license. See LICENSE file in the project root for details.
+ */
 
 String parenthesize(String input) {
   var out = input;

@@ -1,49 +1,101 @@
+/*
+ * Copyright (c) gryffyn 2021.
+ * Licensed under the MIT license. See LICENSE file in the project root for details.
+ */
+
+import 'package:dict2229/dict.dart';
 import 'package:flutter/material.dart';
-import 'package:settings_ui/settings_ui.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class PageSettings extends StatelessWidget {
-  void portDialog(BuildContext context) {
+  void buildDialog(BuildContext context, String pref, Box box, String title) {
+    String label = box.get(pref);
     var alert = Dialog(
-      title: 'Server port',
-      label: 'Server port',
-      pref: 'io.gryffyn.dict2229.port',
-    );
-    showDialog(context: context, builder: (BuildContext context) => alert);
-  }
-
-  void addrDialog(BuildContext context) {
-    var alert = Dialog(
-      title: 'Server address',
-      label: 'Server address',
-      pref: 'io.gryffyn.dict2229.address',
+      title: title,
+      label: label,
+      pref: pref,
     );
     showDialog(context: context, builder: (BuildContext context) => alert);
   }
 
   @override
   Widget build(BuildContext context) {
+    var div = Divider(
+      thickness: 2,
+    );
     return Scaffold(
-      body: Center(
-        child: ListView(
-          padding: EdgeInsets.only(left: 14, top: 16, right: 14),
-          children: [
-            ListTile(
-              leading: Icon(Icons.storage),
-              title: Text('Server address'),
-              subtitle: Text('dict.org'),
-              onTap: () => addrDialog(context),
-            ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.storage),
-              title: Text('Server port'),
-              subtitle: Text('2628'),
-              onTap: () => portDialog(context),
-            ),
-          ],
-        )
-      ),
+      body: ValueListenableBuilder(
+          valueListenable: Hive.box('prefs').listenable(keys: ['addr', 'port']),
+          builder: (context, Box box, widget) {
+            return Center(
+                child: ListView(
+                  padding: EdgeInsets.only(left: 14, top: 12, right: 14),
+                  children: [
+                    ListTile(
+                      visualDensity: VisualDensity.compact,
+                      leading: Icon(Icons.storage),
+                      title: Text('Server Address'),
+                      subtitle: Text(box.get('addr')),
+                      onTap: () => buildDialog(context,
+                        'addr', box, 'Server Address',
+                      ),
+                    ),
+                    div,
+                    ListTile(
+                      visualDensity: VisualDensity.compact,
+                      leading: Icon(Icons.settings_ethernet_rounded),
+                      title: Text('Server Port'),
+                      subtitle: Text(box.get('port')),
+                      onTap: () => buildDialog(context,
+                        'port', box, 'Server Port',
+                      ),
+                    ),
+                  ],
+                )
+            );
+          },
+        ),
+    );
+  }
+}
+
+class DDicts extends StatelessWidget {
+  const DDicts({Key? key}) : super(key: key);
+
+  Future<Map> getDicts() async {
+    var box = Hive.box('prefs');
+    var dc = Dict.newDict(box.get('addr'), int.tryParse(box.get('port'))!);
+    var dicts = await dc.getDatabases();
+    return dicts;
+  }
+
+  List<DropdownMenuItem<String>> createItems(Map data) {
+    List<DropdownMenuItem<String>> items = [];
+    for (var entry in data.keys) {
+      items.add(new DropdownMenuItem(
+          child: Text(
+            entry,
+            style: TextStyle(fontSize: 20),
+          )
+      ));
+    }
+    return items;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<Map>(
+        future: getDicts(),
+        builder: (context, AsyncSnapshot<Map> snapshot) {
+          if (snapshot.hasData) {
+            return DropdownButton(
+              items: createItems(snapshot.data!),
+            );
+          } else {
+            return CircularProgressIndicator();
+          }
+        }
     );
   }
 }
@@ -71,15 +123,15 @@ class _Dialog extends State<Dialog> {
     super.dispose();
   }
 
-  void saveState() async {
-    final prefs = await SharedPreferences.getInstance();
+  saveState() {
+    var box = Hive.box('prefs');
     var inp;
     try {
       inp = int.parse(controller.text);
     } on FormatException {
       inp = controller.text;
     }
-    prefs.setString(this.widget.pref, inp);
+    box.put(this.widget.pref, inp);
     setState(() {
       input = controller.text;
     });
@@ -101,41 +153,14 @@ class _Dialog extends State<Dialog> {
         ],
       ),
       actions: <Widget>[
-        new FlatButton(
+        new TextButton(
           onPressed: () {
             saveState();
             Navigator.of(context).pop();
           },
-          textColor: Theme.of(context).primaryColor,
           child: const Text('Save'),
         ),
       ],
     );
   }
-}
-
-Widget dialogAddress(BuildContext context) {
-  String address;
-  return new AlertDialog(
-    title: const Text('Popup example'),
-    content: new Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        TextFormField(
-          decoration: InputDecoration(
-              border: UnderlineInputBorder(), labelText: 'Server address'),
-        ),
-      ],
-    ),
-    actions: <Widget>[
-      new FlatButton(
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-        textColor: Theme.of(context).primaryColor,
-        child: const Text('Save'),
-      ),
-    ],
-  );
 }

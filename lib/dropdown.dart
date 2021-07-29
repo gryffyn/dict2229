@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) gryffyn 2021.
+ * Licensed under the MIT license. See LICENSE file in the project root for details.
+ */
+
 import 'package:flutter/material.dart';
 
 class DropDown extends StatefulWidget {

@@ -13,21 +13,17 @@ dependencies:
   cupertino_icons: ^1.0.2
   shared_preferences: ^2.0.6
   backdrop: ^0.6.2
-  application_icon: ^2.0.0
+  package_info_plus: ^1.0.4
+  font_awesome_flutter: ^9.1.0
+  url_launcher: ^6.0.9
+  hive: ^2.0.4
+  hive_flutter: ^1.1.0
 
 dev_dependencies:
+  hive_generator: ^1.1.0
+  build_runner: ^2.0.6
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: "^0.8.0"
 
-flutter_icons:
-  android: true
-  ios: true
-  image_path: "assets/icon/ic_launcher.png"
-
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
-
-# The following section is specific to Flutter.
 flutter:
   uses-material-design: true

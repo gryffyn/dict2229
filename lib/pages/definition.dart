@@ -1,8 +1,12 @@
+/*
+ * Copyright (c) gryffyn 2021.
+ * Licensed under the MIT license. See LICENSE file in the project root for details.
+ */
+
 import 'package:dict2229/dict.dart';
 import 'package:flutter/material.dart';
-
-// import 'package:shared_preferences/shared_preferences.dart';
 import 'package:dict2229/utils.dart';
+import 'package:hive/hive.dart';
 
 class PageDefinition extends StatefulWidget {
   PageDefinition({Key? key}) : super(key: key);
@@ -18,11 +22,9 @@ class _PageDefinition extends State<PageDefinition> {
 
   void getDef(String text) async {
     // TODO shared prefs
-    // final prefs = await SharedPreferences.getInstance();
-    // final address = prefs.getString('io.gryffyn.dict2229.server_url') ?? "";
-    // final port = prefs.getInt('io.gryffyn.dict2229.port') ?? 0;
-    var dict = Dict.newDict("neveris.one", 2628);
-    var definition = await dict.define(parenthesize(text));
+    var box = Hive.box('prefs');
+    var dc = Dict.newDict(box.get('addr'), int.tryParse(box.get('port'))!);
+    var definition = await dc.define(parenthesize(text), box.get('dict'));
     setState(() {
       out = definition;
       input = text;
@@ -42,13 +44,16 @@ class _PageDefinition extends State<PageDefinition> {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 14, top: 16, right: 14),
+            padding: EdgeInsets.only(left: 12, top: 16, right: 12),
             child: TextField(
               autofocus: true,
               focusNode: _focusNode,
               decoration: InputDecoration(
+                isDense: true,
                 hintText: 'word to define',
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
               onSubmitted: (text) {
                 getDef(text);
