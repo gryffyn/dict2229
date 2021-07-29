@@ -4,9 +4,9 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:dict2229/config.dart';
 
 class PageAbout extends StatelessWidget {
   static const _url = "https://git.neveris.one/gryffyn/dict2229";
@@ -18,8 +18,6 @@ class PageAbout extends StatelessWidget {
     var div = Divider(
       thickness: 2,
     );
-    _PackageInfo info = new _PackageInfo();
-    info.get();
     return Scaffold(
       body: Center(
           child: ListView(
@@ -34,33 +32,32 @@ class PageAbout extends StatelessWidget {
               div,
               ListTile(
                 visualDensity: VisualDensity.compact,
-                leading: Icon(Icons.info_outline_rounded),
-                title: Text('App Info'),
-                onTap: () => showAboutDialog(
+                leading: Icon(Icons.copyright_rounded),
+                title: Text('Licenses'),
+                onTap: () => showLicensePage(
                   context: context,
-                  applicationName: info.appName,
-                  applicationVersion: info.version + "+" + info.buildNumber,
+                  applicationName: appInfo.appName,
+                  applicationVersion: appInfo.version + "+" + appInfo.buildNumber,
                   applicationLegalese: 'Copyright © gryffyn 2021',
+                ),
+              ),
+              div,
+              Container(
+                padding: EdgeInsets.only(left: 14, top: 12, right: 14),
+                child: RichText(
+                  text: TextSpan(
+                    style: DefaultTextStyle.of(context).style,
+                    children: <TextSpan>[
+                      TextSpan(text: appInfo.appName + "\n\n", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                      TextSpan(text: appInfo.version + "+" + appInfo.buildNumber + "\n", style: TextStyle(fontSize: 16)),
+                      TextSpan(text: "gryffyn", style: TextStyle(fontSize: 16)),
+                    ],
+                  ),
                 ),
               ),
             ],
           )
       ),
     );
-  }
-}
-
-class _PackageInfo {
-  late String appName = "";
-  late String packageName = "";
-  late String version = "";
-  late String buildNumber = "";
-
-  get() async {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    this.appName = packageInfo.appName;
-    this.packageName = packageInfo.packageName;
-    this.version = packageInfo.version;
-    this.buildNumber = packageInfo.buildNumber;
   }
 }

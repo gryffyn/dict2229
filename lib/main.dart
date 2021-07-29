@@ -4,6 +4,7 @@
  */
 
 import 'package:backdrop/backdrop.dart';
+import 'package:dict2229/config.dart';
 import 'package:dict2229/pages/about.dart';
 import 'package:dict2229/pages/definition.dart';
 import 'package:dict2229/pages/match.dart';
@@ -16,11 +17,26 @@ void main() async {
   await Hive.initFlutter();
   var box = await Hive.openBox('prefs');
   setDefault(box);
+  await appInfo.get();
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  MyApp({Key? key}) : super(key: key);
+
+  @override
+  _MyApp createState() => _MyApp();
+}
+
+class _MyApp extends State<MyApp> {
+  @override
+  initState() {
+    super.initState();
+    currentTheme.addListener(() {
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var text2 = TextStyle(
@@ -29,36 +45,36 @@ class MyApp extends StatelessWidget {
       color: Colors.white,
     );
     return MaterialApp(
-        title: 'dict2229',
-        darkTheme: ThemeData(
-          accentColor: Colors.pinkAccent,
-          canvasColor: Colors.black,
-          brightness: Brightness.dark,
-          primaryColor: Colors.pink,
-          primarySwatch: Colors.pink,
-          primaryTextTheme: TextTheme(
-            bodyText1: TextStyle(
-              color: Colors.white,
-            ),
-            bodyText2: text2,
+      title: 'dict2229',
+      darkTheme: ThemeData(
+        accentColor: Colors.pinkAccent,
+        canvasColor: Colors.black,
+        brightness: Brightness.dark,
+        primaryColor: Colors.pink,
+        primarySwatch: Colors.pink,
+        primaryTextTheme: TextTheme(
+          bodyText1: TextStyle(
+            color: Colors.white,
           ),
+          bodyText2: text2,
         ),
-        theme: ThemeData(
-          accentColor: Colors.pinkAccent,
-          primaryTextTheme: TextTheme(
-            bodyText1: TextStyle(
-              color: Colors.black,
-            ),
-            bodyText2: text2,
+      ),
+      theme: ThemeData(
+        accentColor: Colors.pinkAccent,
+        primaryTextTheme: TextTheme(
+          bodyText1: TextStyle(
+            color: Colors.black,
           ),
-          primaryColor: Colors.pink,
-          primarySwatch: Colors.pink,
+          bodyText2: text2,
         ),
-        themeMode: ThemeMode.system,
-        home: ValueListenableBuilder(
-          valueListenable: Hive.box('prefs').listenable(),
-          builder: (context, box, widget) => Navigation(),
-        ),
+        primaryColor: Colors.pink,
+        primarySwatch: Colors.pink,
+      ),
+      themeMode: currentTheme.getCurrentTheme(),
+      home: ValueListenableBuilder(
+        valueListenable: Hive.box('prefs').listenable(),
+        builder: (context, box, widget) => Navigation(),
+      ),
     );
   }
 }

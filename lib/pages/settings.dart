@@ -3,10 +3,13 @@
  * Licensed under the MIT license. See LICENSE file in the project root for details.
  */
 
+import 'package:dict2229/config.dart';
 import 'package:dict2229/dict.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
+import '../utils.dart';
 
 class PageSettings extends StatelessWidget {
   void buildDialog(BuildContext context, String pref, Box box, String title) {
@@ -22,11 +25,11 @@ class PageSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var div = Divider(
-      thickness: 2,
+      color: Colors.grey,
     );
     return Scaffold(
       body: ValueListenableBuilder(
-          valueListenable: Hive.box('prefs').listenable(keys: ['addr', 'port']),
+          valueListenable: Hive.box('prefs').listenable(keys: ['addr', 'port', 'theme']),
           builder: (context, Box box, widget) {
             return Center(
                 child: ListView(
@@ -34,7 +37,10 @@ class PageSettings extends StatelessWidget {
                   children: [
                     ListTile(
                       visualDensity: VisualDensity.compact,
-                      leading: Icon(Icons.storage),
+                      leading: Container(
+                        height: double.infinity,
+                        child: Icon(Icons.storage),
+                      ),
                       title: Text('Server Address'),
                       subtitle: Text(box.get('addr')),
                       onTap: () => buildDialog(context,
@@ -44,12 +50,27 @@ class PageSettings extends StatelessWidget {
                     div,
                     ListTile(
                       visualDensity: VisualDensity.compact,
-                      leading: Icon(Icons.settings_ethernet_rounded),
+                      leading: Container(
+                        height: double.infinity,
+                        child: Icon(Icons.settings_ethernet_rounded),
+                      ),
                       title: Text('Server Port'),
                       subtitle: Text(box.get('port')),
                       onTap: () => buildDialog(context,
                         'port', box, 'Server Port',
                       ),
+                    ),
+                    div,
+                    ListTile(
+                      visualDensity: VisualDensity.compact,
+                      leading: Container(
+                        height: double.infinity,
+                        child: Icon(Icons.wb_sunny_outlined),
+                      ),
+                      title: Text('Theme'),
+                      subtitle: Text(box.get('theme')),
+                      onTap: currentTheme.toggleTheme,
+                      onLongPress: () => currentTheme.setSystemTheme(),
                     ),
                   ],
                 )
