@@ -15,7 +15,7 @@ output will be in `build/app/outputs/apk/release/`.
 
 ## Downloads
 
-Signed prebuilt APKs are available [here](https://neveris.one/build/dict2229/README.html).
+Signed prebuilt APKs are available [here](https://neveris.one/build/dict2229/releases/).
 
 # License
 Copyright © gryffyn 2021  
