@@ -6,8 +6,6 @@
 import 'package:dict2229/dialogs/listDialog.dart';
 import 'package:dict2229/dialogs/matchDialog.dart';
 import 'package:dict2229/dict.dart';
-import 'package:dict2229/pages/definition.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:dict2229/utils.dart';
 import 'package:hive/hive.dart';
@@ -27,10 +25,6 @@ class _PageMatch extends State<PageMatch> {
 
   void getDef(String text) async {
     var box = Hive.box('prefs');
-    // TODO shared prefs
-    // final prefs = await SharedPreferences.getInstance();
-    // final address = prefs.getString('io.gryffyn.dict2229.server_url') ?? "";
-    // final port = prefs.getInt('io.gryffyn.dict2229.port') ?? 0;
     var dict = Dict.newDict(box.get('addr'), int.tryParse(box.get('port'))!);
     var definition = await dict.match(parenthesize(text), box.get('strat'), box.get('dict'));
     setState(() {
@@ -67,11 +61,12 @@ class _PageMatch extends State<PageMatch> {
     var dict = Dict.newDict(box.get('addr'), int.tryParse(box.get('port'))!);
     var strats = await dict.getStrategies();
     showDialog(
-        context: context,
-        builder: (BuildContext context) => ListDialog(
-              title: "Strategies",
-              text: strats,
-            ));
+      context: context,
+      builder: (BuildContext context) => ListDialog(
+            title: "Strategies",
+            text: strats,
+      )).then((value) => setStrat(value));
+    _focusNode.requestFocus();
   }
 
   defineMatch(String match, String dict) {
@@ -107,23 +102,37 @@ class _PageMatch extends State<PageMatch> {
         children: [
           Padding(
             padding: EdgeInsets.only(left: 12, top: 16, right: 12),
-            child: TextField(
-              autofocus: true,
-              focusNode: _focusNode,
-              decoration: InputDecoration(
-                isDense: true,
-                hintText: 'string to match',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    autofocus: true,
+                    focusNode: _focusNode,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      hintText: 'string to match',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onChanged: (text) {
+                      setSearch(text);
+                    },
+                    onSubmitted: (text) {
+                      getDef(text);
+                    },
+                  ),
                 ),
-              ),
-              onChanged: (text) {
-                setSearch(text);
-              },
-              onSubmitted: (text) {
-                getDef(text);
-              },
-            ),
+                IconButton(
+                  onPressed: () {
+                    if (search != "") {
+                      getDef(search);
+                    }
+                  },
+                  icon: Icon(Icons.send_rounded, color: Colors.pink),
+                ),
+              ],
+            )
           ),
           Padding(
               padding: EdgeInsets.only(left: 12, top: 8, right: 12),

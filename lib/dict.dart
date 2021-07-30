@@ -66,7 +66,12 @@ class Dict {
       ];
       dicts[parts[0]] = parts[1];
     }
-    return dicts;
+    Map<dynamic,dynamic> allDicts = {
+      "*": "\"all dictionaries\"",
+      "!": "\"first match from all dicts\"",
+    };
+    allDicts.addAll(dicts);
+    return allDicts;
   }
 
   Future<List<Definition>> define(String word, [String database = '*']) async {

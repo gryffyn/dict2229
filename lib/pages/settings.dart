@@ -4,12 +4,11 @@
  */
 
 import 'package:dict2229/config.dart';
+import 'package:dict2229/dialogs/listDialog.dart';
 import 'package:dict2229/dict.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
-import '../utils.dart';
 
 class PageSettings extends StatelessWidget {
   void buildDialog(BuildContext context, String pref, Box box, String title) {
@@ -30,12 +29,32 @@ class PageSettings extends StatelessWidget {
     showDialog(context: context, builder: (BuildContext context) => alert);
   }
 
+  setDict(String dict, Box box) {
+    box.put('dict', dict);
+  }
+
+  void listDialogDict(BuildContext context) async {
+    var box = Hive.box('prefs');
+    var dict = Dict.newDict(box.get('addr'), int.tryParse(box.get('port'))!);
+    var dbs = await dict.getDatabases();
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => ListDialog(
+          title: "Dictionaries",
+          text: dbs,
+        )).then((value) => setDict(value, box));
+  }
+
   resetAddr(Box box) {
     box.put('addr', 'dict.neveris.one');
   }
 
   resetPort(Box box) {
     box.put('port', '2628');
+  }
+
+  resetDict(Box box) {
+    box.put('dict', '*');
   }
 
   @override
@@ -45,7 +64,7 @@ class PageSettings extends StatelessWidget {
     );
     return Scaffold(
       body: ValueListenableBuilder(
-          valueListenable: Hive.box('prefs').listenable(keys: ['addr', 'port', 'theme']),
+          valueListenable: Hive.box('prefs').listenable(keys: ['addr', 'port', 'theme', 'dict']),
           builder: (context, Box box, widget) {
             return Center(
                 child: ListView(
@@ -77,6 +96,18 @@ class PageSettings extends StatelessWidget {
                         'port', box, 'Server Port',
                       ),
                       onLongPress: () => resetPort(box),
+                    ),
+                    div,
+                    ListTile(
+                      visualDensity: VisualDensity.compact,
+                      leading: Container(
+                        height: double.infinity,
+                        child: Icon(Icons.list_alt_rounded),
+                      ),
+                      title: Text('Database'),
+                      subtitle: Text(box.get('dict')),
+                      onTap: () => listDialogDict(context),
+                      onLongPress: () => resetDict(box),
                     ),
                     div,
                     ListTile(

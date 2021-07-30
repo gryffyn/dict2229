@@ -134,7 +134,7 @@ class _NavigationState extends State<Navigation> {
 
 setDefault(Box box) {
   if (!box.containsKey('addr')) {
-    box.put('addr', 'port.neveris.one');
+    box.put('addr', 'dict.neveris.one');
   }
   if (!box.containsKey('port')) {
     box.put('port', '2628');

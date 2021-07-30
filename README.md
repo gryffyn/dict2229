@@ -1,4 +1,5 @@
 # dict2229
+[![Actions Status: CI\_test](https://github.com/gryffyn/dict2229/workflows/CI_test/badge.svg)](https://github.com/gryffyn/dict2229/actions?query=workflow%3A"CI_test")
 
 a client for the RFC 2229 DICT protocol.
 

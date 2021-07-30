@@ -84,6 +84,7 @@ app.*.map.json
 # other stuff
 deploy.sh
 deploy_release.sh
+/ci/
 
 # Exceptions to above rules.
 !**/ios/**/default.mode1v3

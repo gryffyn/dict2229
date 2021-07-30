@@ -26,9 +26,14 @@ class ListDialog extends StatelessWidget {
           },
           itemBuilder: (BuildContext context, int index) {
             String key = text.keys.elementAt(index);
-            return ListTile(
-              title: Text(key),
-              subtitle: Text(stripParen(text[key])),
+            return InkWell(
+              onTap: () {
+                Navigator.pop(context, key);
+              },
+              child: ListTile(
+                title: Text(key),
+                subtitle: Text(stripParen(text[key])),
+              )
             );
           },
         ),
