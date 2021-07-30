@@ -10,6 +10,8 @@ import 'package:dict2229/dict.dart';
 void main() {
   var dict = Dict.newDict("dict.neveris.one", 2628);
   const expDb = {
+    '*': '"all dictionaries"',
+    '!': '"first match from all dicts"',
     'gcide': '"The Collaborative International Dictionary of English v.0.48"',
     'wn': '"WordNet (r) 3.1 (2011)"',
     'moby-thesaurus': '"Moby Thesaurus II by Grady Ward, 1.0"',
