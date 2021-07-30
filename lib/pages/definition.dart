@@ -9,7 +9,8 @@ import 'package:dict2229/utils.dart';
 import 'package:hive/hive.dart';
 
 class PageDefinition extends StatefulWidget {
-  PageDefinition({Key? key}) : super(key: key);
+  PageDefinition({Key? key, this.word = ""}) : super(key: key);
+  String word;
 
   @override
   _PageDefinition createState() => _PageDefinition();
@@ -21,7 +22,6 @@ class _PageDefinition extends State<PageDefinition> {
   late String input = "";
 
   void getDef(String text) async {
-    // TODO shared prefs
     var box = Hive.box('prefs');
     var dc = Dict.newDict(box.get('addr'), int.tryParse(box.get('port'))!);
     var definition = await dc.define(parenthesize(text), box.get('dict'));
@@ -70,7 +70,11 @@ class _PageDefinition extends State<PageDefinition> {
                 ),
               ),
               onSubmitted: (text) {
-                getDef(text);
+                if (this.widget.word != "") {
+                  getDef(this.widget.word);
+                } else {
+                  getDef(text);
+                }
               },
             ),
           ),

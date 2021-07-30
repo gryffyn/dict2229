@@ -34,7 +34,7 @@ class Dict {
       var bytes = Uint8List.fromList(data.expand((x) => x).toList());
       resp = utf8.decode(bytes).replaceAll("\r", "");
     });
-    _socket.close();
+    _socket.destroy();
     return resp;
   }
 
@@ -51,7 +51,7 @@ class Dict {
       var bytes = Uint8List.fromList(data.expand((x) => x).toList());
       resp = utf8.decode(bytes).replaceAll("\r", "").trim();
     });
-    _socket.close();
+    _socket.destroy();
     LineSplitter ls = new LineSplitter();
     List<String> splitOut = ls.convert(stripHeaders(resp));
     var dicts = new Map();
@@ -85,7 +85,7 @@ class Dict {
       resp = utf8.decode(bytes).replaceAll("\r", "");
       defs = splitDefinitions(resp);
     });
-    _socket.close();
+    _socket.destroy();
     return defs;
   }
 
@@ -106,7 +106,7 @@ class Dict {
       resp = utf8.decode(bytes).replaceAll("\r", "");
       matches = splitMatches(resp);
     });
-    _socket.close();
+    _socket.destroy();
     return matches;
   }
 
@@ -122,7 +122,7 @@ class Dict {
       var bytes = Uint8List.fromList(data.expand((x) => x).toList());
       resp = utf8.decode(bytes).replaceAll("\r", "");
     });
-    _socket.close();
+    _socket.destroy();
     LineSplitter ls = new LineSplitter();
     List<String> splitOut = ls.convert(stripHeaders(resp));
     var strats = new Map();
@@ -228,7 +228,7 @@ class Match {
 
   void processMatch(String def) {
     if (def != "" && def != ".") {
-      var regex = RegExp(r'^(\S*)\s\"(\S*)\"').firstMatch(def)!;
+      var regex = RegExp(r'^(\S*)\s\"([^"]*)\"').firstMatch(def)!;
       sourceName = regex.group(1)!;
       matchName = regex.group(2)!;
     }
@@ -241,7 +241,7 @@ List<Match> splitMatches(String str) {
   Match firstMatch = new Match();
   var numMatches = 0;
   if (lines[0] != "") {
-    numMatches = int.tryParse(RegExp(r'^152\s(\d+)\s').firstMatch(lines[0])!.group(1)!)!;
+    numMatches = int.tryParse(RegExp(r'^152\s(\d*)\s').firstMatch(lines[0])!.group(1)!)!;
   }
   firstMatch.sourceName = "$numMatches matches found.";
   matches.add(firstMatch);

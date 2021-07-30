@@ -38,7 +38,7 @@ class PageAbout extends StatelessWidget {
                   context: context,
                   applicationName: appInfo.appName,
                   applicationVersion: appInfo.version + "+" + appInfo.buildNumber,
-                  applicationLegalese: 'Copyright © gryffyn 2021',
+                  applicationLegalese: 'Copyright © gryffyn 2021\nImages are copyright CC BY-NC-SA 4.0.',
                 ),
               ),
               div,

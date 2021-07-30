@@ -4,7 +4,10 @@
  */
 
 import 'package:dict2229/dialogs/listDialog.dart';
+import 'package:dict2229/dialogs/matchDialog.dart';
 import 'package:dict2229/dict.dart';
+import 'package:dict2229/pages/definition.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:dict2229/utils.dart';
 import 'package:hive/hive.dart';
@@ -43,6 +46,8 @@ class _PageMatch extends State<PageMatch> {
   }
 
   void setStrat(String text) {
+    var box = Hive.box('prefs');
+    box.put('strat', text);
     setState(() {
       strat = text;
     });
@@ -50,11 +55,16 @@ class _PageMatch extends State<PageMatch> {
 
   String getStrat() {
     var box = Hive.box('prefs');
-    return box.get('strat');
+    var text = box.get('strat');
+    setState(() {
+      strat = text;
+    });
+    return text;
   }
 
   void showList() async {
-    var dict = Dict.newDict("neveris.one", 2628);
+    var box = Hive.box('prefs');
+    var dict = Dict.newDict(box.get('addr'), int.tryParse(box.get('port'))!);
     var strats = await dict.getStrategies();
     showDialog(
         context: context,
@@ -62,6 +72,14 @@ class _PageMatch extends State<PageMatch> {
               title: "Strategies",
               text: strats,
             ));
+  }
+
+  defineMatch(String match, String dict) {
+    showDialog(context: context,
+        builder: (BuildContext context) => MatchDialog(
+          match: match,
+          dict: dict,
+    ));
   }
 
   @override
@@ -150,10 +168,15 @@ class _PageMatch extends State<PageMatch> {
                 },
                 itemBuilder: (BuildContext context, int index) {
                   Match key = out.elementAt(index);
-                  return RichText(
-                    text: TextSpan(
-                      style: DefaultTextStyle.of(context).style,
-                      children: buildText(key),
+                  return InkWell(
+                    onTap: () {
+                      defineMatch(key.matchName, key.sourceName);
+                    },
+                    child: RichText(
+                      text: TextSpan(
+                        style: DefaultTextStyle.of(context).style,
+                        children: buildText(key),
+                      ),
                     ),
                   );
                 },

@@ -18,4 +18,6 @@ Signed prebuilt APKs are available [here](https://neveris.one/build/dict2229/REA
 
 # License
 Copyright © gryffyn 2021  
-See `LICENSE` for details
+See `LICENSE` for details.  
+
+Images in this repository are copyright CC BY-NC-SA 4.0 (🅭🅯🄏🄎).

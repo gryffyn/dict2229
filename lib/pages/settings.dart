@@ -14,12 +14,28 @@ import '../utils.dart';
 class PageSettings extends StatelessWidget {
   void buildDialog(BuildContext context, String pref, Box box, String title) {
     String label = box.get(pref);
-    var alert = Dialog(
+    late TextInputType inputType;
+    if (pref == 'addr') {
+      inputType = TextInputType.text;
+    } else if (pref == 'port') {
+      inputType = TextInputType.number;
+    }
+
+    var alert = SettingDialog(
       title: title,
       label: label,
       pref: pref,
+      inputType: inputType,
     );
     showDialog(context: context, builder: (BuildContext context) => alert);
+  }
+
+  resetAddr(Box box) {
+    box.put('addr', 'dict.neveris.one');
+  }
+
+  resetPort(Box box) {
+    box.put('port', '2628');
   }
 
   @override
@@ -46,6 +62,7 @@ class PageSettings extends StatelessWidget {
                       onTap: () => buildDialog(context,
                         'addr', box, 'Server Address',
                       ),
+                      onLongPress: () => resetAddr(box),
                     ),
                     div,
                     ListTile(
@@ -59,6 +76,7 @@ class PageSettings extends StatelessWidget {
                       onTap: () => buildDialog(context,
                         'port', box, 'Server Port',
                       ),
+                      onLongPress: () => resetPort(box),
                     ),
                     div,
                     ListTile(
@@ -121,19 +139,20 @@ class DDicts extends StatelessWidget {
   }
 }
 
-class Dialog extends StatefulWidget {
-  const Dialog(
-      {Key? key, required this.title, required this.label, required this.pref})
+class SettingDialog extends StatefulWidget {
+  const SettingDialog(
+      {Key? key, required this.title, required this.label, required this.pref, required this.inputType})
       : super(key: key);
+  final TextInputType inputType;
   final String title;
   final String label;
   final String pref;
 
   @override
-  _Dialog createState() => _Dialog();
+  _SettingDialog createState() => _SettingDialog();
 }
 
-class _Dialog extends State<Dialog> {
+class _SettingDialog extends State<SettingDialog> {
   var input;
   final controller = TextEditingController();
 
@@ -146,13 +165,7 @@ class _Dialog extends State<Dialog> {
 
   saveState() {
     var box = Hive.box('prefs');
-    var inp;
-    try {
-      inp = int.parse(controller.text);
-    } on FormatException {
-      inp = controller.text;
-    }
-    box.put(this.widget.pref, inp);
+    box.put(this.widget.pref, controller.text);
     setState(() {
       input = controller.text;
     });
@@ -167,9 +180,18 @@ class _Dialog extends State<Dialog> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           TextFormField(
+            enableSuggestions: false,
+            keyboardType: this.widget.inputType,
             decoration: InputDecoration(
                 border: UnderlineInputBorder(), labelText: this.widget.label),
             controller: controller,
+            onFieldSubmitted: (_) {
+              saveState();
+              Navigator.of(context).pop();
+            },
+            onEditingComplete: () {
+              saveState();
+            },
           ),
         ],
       ),
