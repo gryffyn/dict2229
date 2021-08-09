@@ -45,7 +45,6 @@ class Dict {
       _socket = sock;
     }).then((_) {
       _socket.write('SHOW DATABASES\r\n QUIT\r\n');
-      ;
       return _socket.toList();
     }).then((data) {
       var bytes = Uint8List.fromList(data.expand((x) => x).toList());

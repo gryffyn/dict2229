@@ -79,7 +79,6 @@ class ThemeSetting with ChangeNotifier {
   }
 
   void _saveTheme(ThemeMode newMode) {
-    String tm = box.get('theme');
     box.put('theme', modeToString(newMode));
   }
 
