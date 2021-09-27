@@ -46,9 +46,10 @@ class _MyApp extends State<MyApp> {
     );
     return MaterialApp(
       title: 'dict2229',
+      /*
       darkTheme: ThemeData(
         accentColor: Colors.pinkAccent,
-        canvasColor: Colors.black,
+        canvasColor: createMaterialColor(Color(0xFF1d1e20)),
         brightness: Brightness.dark,
         primaryColor: Colors.pink,
         primarySwatch: Colors.pink,
@@ -58,7 +59,8 @@ class _MyApp extends State<MyApp> {
           ),
           bodyText2: text2,
         ),
-      ),
+      ),  */
+      darkTheme: F5Theme.theme,
       theme: ThemeData(
         accentColor: Colors.pinkAccent,
         primaryTextTheme: TextTheme(
@@ -92,12 +94,17 @@ class _NavigationState extends State<Navigation> {
   @override
   Widget build(BuildContext context) {
     return BackdropScaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       animationCurve: Curves.fastLinearToSlowEaseIn,
       frontLayerScrim: Colors.black54,
       appBar: BackdropAppBar(
+        leading: BackdropToggleButton(color: Theme.of(context).primaryTextTheme.bodyText2!.color!),
+        iconTheme: IconThemeData(color: Theme.of(context).primaryTextTheme.bodyText2!.color),
+        backgroundColor: Theme.of(context).primaryColor,
         titleSpacing: 10,
         brightness: Brightness.dark,
-        title: Text(_subHeaders[_currentIndex]),
+        textTheme: Theme.of(context).primaryTextTheme,
+        title: Text(_subHeaders[_currentIndex], style: TextStyle(color: Theme.of(context).primaryTextTheme.bodyText2!.color)),
       ),
       stickyFrontLayer: true,
       frontLayer: _pages[_currentIndex],
@@ -145,4 +152,59 @@ setDefault(Box box) {
   if (!box.containsKey('strat')) {
     box.put('strat', '.');
   }
+}
+
+MaterialColor createMaterialColor(Color color) {
+  List strengths = <double>[.05];
+  final swatch = <int, Color>{};
+  final int r = color.red, g = color.green, b = color.blue;
+
+  for (int i = 1; i < 10; i++) {
+    strengths.add(0.1 * i);
+  }
+  strengths.forEach((strength) {
+    final double ds = 0.5 - strength;
+    swatch[(strength * 1000).round()] = Color.fromRGBO(
+      r + ((ds < 0 ? r : (255 - r)) * ds).round(),
+      g + ((ds < 0 ? g : (255 - g)) * ds).round(),
+      b + ((ds < 0 ? b : (255 - b)) * ds).round(),
+      1,
+    );
+  });
+  return MaterialColor(color.value, swatch);
+}
+
+class F5Theme {
+  static var theme = ThemeData(
+    appBarTheme: AppBarTheme(
+        backgroundColor: Color(0xFFf5a9c9),
+        foregroundColor: Color(0xFF1d1e20)
+    ),
+    dividerColor: Color(0xFF454547),
+    canvasColor: Color(0xFF1d1e20),
+    brightness: Brightness.dark,
+    primaryColor: Color(0xFFf5a9c9),
+    primaryTextTheme: TextTheme(
+      bodyText1: TextStyle(
+        color: Color(0xFFdadadb),
+      ),
+      bodyText2: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+        color: Color(0xFF1d1e20),
+      ),
+      headline6: TextStyle(
+        color: Color(0xFF1d1e20)
+      )
+    ),
+    colorScheme: ColorScheme.dark(
+      background: const Color(0xFF1d1e20),
+      onBackground: const Color(0xFF454547),
+      primary: const Color(0xFFf5a9c9),
+      onPrimary: const Color(0xFFdadadb),
+      primaryVariant: const Color(0xFFffffff),
+      brightness: Brightness.dark,
+    )
+  );
+
 }

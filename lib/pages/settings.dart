@@ -60,7 +60,7 @@ class PageSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var div = Divider(
-      color: Colors.grey,
+      color: Theme.of(context).dividerColor,
     );
     return Scaffold(
       body: ValueListenableBuilder(

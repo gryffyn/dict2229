@@ -129,7 +129,7 @@ class _PageMatch extends State<PageMatch> {
                       getDef(search);
                     }
                   },
-                  icon: Icon(Icons.send_rounded, color: Colors.pink),
+                  icon: Icon(Icons.send_rounded, color: Theme.of(context).primaryColor),
                 ),
               ],
             )
@@ -160,7 +160,7 @@ class _PageMatch extends State<PageMatch> {
                   ),
                   IconButton(
                     onPressed: showList,
-                    icon: Icon(Icons.list_alt_rounded, color: Colors.pink),
+                    icon: Icon(Icons.list_alt_rounded, color: Theme.of(context).primaryColor),
                   )
                 ],
               )),

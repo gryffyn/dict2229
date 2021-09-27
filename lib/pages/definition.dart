@@ -97,7 +97,7 @@ class _PageDefinition extends State<PageDefinition> {
                     onPressed: () {
                       getDef(input);
                     },
-                    icon: Icon(Icons.send_rounded, color: Colors.pink,),
+                    icon: Icon(Icons.send_rounded, color: Theme.of(context).primaryColor),
                   ),
                 ],
               )),

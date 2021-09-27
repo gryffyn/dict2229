@@ -10,13 +10,13 @@ class PageSettingsWIP extends StatelessWidget {
           children: [
             Icon(
               Icons.warning_amber_rounded,
-              color: Colors.pink,
+              color: Theme.of(context).primaryColor,
               size: 192,
             ),
             Text(
               'WIP',
               style: TextStyle(
-                color: Colors.pink,
+                color: Theme.of(context).primaryColor,
                 fontSize: 96,
               ),
             ),
