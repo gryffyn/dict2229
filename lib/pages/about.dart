@@ -9,9 +9,10 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:dict2229/config.dart';
 
 class PageAbout extends StatelessWidget {
-  static const _url = "https://git.neveris.one/gryffyn/dict2229";
+  static var _uri = Uri(scheme: 'https', host: 'git.gryffyn.io', path: 'gryffyn/dict2229');
+  static var _url = _uri.toString();
   void _launchURL() async =>
-      await canLaunch(_url) ? await launch(_url) : throw 'Could not launch $_url';
+      await canLaunchUrl(_uri) ? await launchUrl(_uri) : throw 'Could not launch $_url';
 
   @override
   Widget build(BuildContext context) {

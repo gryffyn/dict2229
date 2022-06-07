@@ -80,7 +80,7 @@ class _PageMatch extends State<PageMatch> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) =>FocusScope.of(context).requestFocus(_focusNode));
+    WidgetsBinding.instance.addPostFrameCallback((_) =>FocusScope.of(context).requestFocus(_focusNode));
   }
 
   List<TextSpan> buildText(Match key) {

@@ -7,7 +7,6 @@ import 'package:dict2229/config.dart';
 import 'package:dict2229/dialogs/listDialog.dart';
 import 'package:dict2229/dict.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class PageSettings extends StatelessWidget {
@@ -42,11 +41,15 @@ class PageSettings extends StatelessWidget {
         builder: (BuildContext context) => ListDialog(
           title: "Dictionaries",
           text: dbs,
-        )).then((value) => setDict(value, box));
+        )).then((value) => {
+          if(value != null) {
+            setDict(value, box)
+          }
+    });
   }
 
   resetAddr(Box box) {
-    box.put('addr', 'dict.neveris.one');
+    box.put('addr', 'dict.gryffyn.io');
   }
 
   resetPort(Box box) {
@@ -160,7 +163,7 @@ class DDicts extends StatelessWidget {
         builder: (context, AsyncSnapshot<Map> snapshot) {
           if (snapshot.hasData) {
             return DropdownButton(
-              items: createItems(snapshot.data!),
+              items: createItems(snapshot.data!), onChanged: (String? value) {  },
             );
           } else {
             return CircularProgressIndicator();
