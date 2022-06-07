@@ -10,8 +10,8 @@ import 'package:dict2229/pages/definition.dart';
 import 'package:dict2229/pages/match.dart';
 import 'package:dict2229/pages/settings.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -39,39 +39,19 @@ class _MyApp extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    var text2 = TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.w500,
-      color: Colors.white,
-    );
     return MaterialApp(
       title: 'dict2229',
-      /*
-      darkTheme: ThemeData(
-        accentColor: Colors.pinkAccent,
-        canvasColor: createMaterialColor(Color(0xFF1d1e20)),
-        brightness: Brightness.dark,
-        primaryColor: Colors.pink,
-        primarySwatch: Colors.pink,
-        primaryTextTheme: TextTheme(
-          bodyText1: TextStyle(
-            color: Colors.white,
-          ),
-          bodyText2: text2,
-        ),
-      ),  */
-      darkTheme: F5Theme.theme,
-      theme: ThemeData(
-        accentColor: Colors.pinkAccent,
-        primaryTextTheme: TextTheme(
-          bodyText1: TextStyle(
-            color: Colors.black,
-          ),
-          bodyText2: text2,
-        ),
-        primaryColor: Colors.pink,
-        primarySwatch: Colors.pink,
-      ),
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('en', ''), // English, no country code
+        Locale('es', ''), // Spanish, no country code
+      ],
+      darkTheme: F5Theme.dark_theme,
+      theme: F5Theme.light_theme,
       themeMode: currentTheme.getCurrentTheme(),
       home: ValueListenableBuilder(
         valueListenable: Hive.box('prefs').listenable(),
@@ -141,7 +121,7 @@ class _NavigationState extends State<Navigation> {
 
 setDefault(Box box) {
   if (!box.containsKey('addr')) {
-    box.put('addr', 'dict.neveris.one');
+    box.put('addr', 'dict.gryffyn.io');
   }
   if (!box.containsKey('port')) {
     box.put('port', '2628');
@@ -175,7 +155,24 @@ MaterialColor createMaterialColor(Color color) {
 }
 
 class F5Theme {
-  static var theme = ThemeData(
+  static var light_theme = ThemeData(
+      primaryColor: Colors.pink,
+      primaryTextTheme: TextTheme(
+        bodyText1: TextStyle(
+          color: Colors.black,
+        ),
+        bodyText2: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          color: Colors.white,
+        ),
+      ),
+      colorScheme: ColorScheme.light(
+        primary: Colors.pink,
+        secondary: Colors.pinkAccent,
+      )
+  );
+  static var dark_theme = ThemeData(
     appBarTheme: AppBarTheme(
         backgroundColor: Color(0xFFf5a9c9),
         foregroundColor: Color(0xFF1d1e20)
@@ -198,13 +195,12 @@ class F5Theme {
       )
     ),
     colorScheme: ColorScheme.dark(
-      background: const Color(0xFF1d1e20),
-      onBackground: const Color(0xFF454547),
-      primary: const Color(0xFFf5a9c9),
-      onPrimary: const Color(0xFFdadadb),
-      primaryVariant: const Color(0xFFffffff),
+      background: Color(0xFF1d1e20),
+      onBackground: Color(0xFFdadadb),
+      primary: Color(0xFFf5a9c9),
+      secondary: Color(0xFFF6B6D1),
+      onPrimary: Color(0xFF1d1e20),
       brightness: Brightness.dark,
     )
   );
-
 }

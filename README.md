@@ -5,7 +5,7 @@ a client for the RFC 2229 DICT protocol.
 
 ## Building
 ```
-git clone https://git.neveris.one/gryffyn/dict2229
+git clone https://git.gryffyn.io/gryffyn/dict2229
 cd dict2229
 flutter pub get
 flutter build apk --split-per-abi --bundle-sksl-path flutter_01.sksl.json --split-debug-info=debug

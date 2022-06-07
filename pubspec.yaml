@@ -1,13 +1,15 @@
 name: dict2229
 description: a client for the RFC 2229 DICT protocol.
 publish_to: 'none'
-version: 0.6.0+8
+version: 0.6.1+9
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
+    sdk: flutter
+  flutter_localizations:
     sdk: flutter
   settings_ui: ^1.0.0
   cupertino_icons: ^1.0.2
